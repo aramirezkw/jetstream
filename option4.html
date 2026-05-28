@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>My Home — Market Pulse</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: #f3f3f4;
+    color: #1a1a1a;
+    padding: 24px 40px 60px;
+  }
+
+  /* ===== Top nav cards ===== */
+  .top-nav {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .nav-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 18px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    min-height: 76px;
+  }
+  .nav-card.active { background: #0c2b5c; color: #fff; }
+  .nav-left { display: flex; align-items: center; gap: 14px; }
+  .nav-icon {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: #eaf1fb;
+    display: flex; align-items: center; justify-content: center;
+    color: #0c2b5c; flex-shrink: 0;
+  }
+  .nav-card.active .nav-icon { background: rgba(255,255,255,0.12); color: #fff; }
+  .nav-icon svg { width: 18px; height: 18px; }
+  .nav-title { font-weight: 700; font-size: 15px; }
+  .nav-sub { font-size: 12.5px; color: #0c5fd6; font-weight: 500; margin-top: 2px; }
+  .nav-card.active .nav-sub,
+  .nav-card.active .nav-right-sub { color: rgba(255,255,255,0.85); font-weight: 400; }
+  .nav-right { text-align: right; }
+  .nav-right-sub { font-size: 12px; color: #4a4a4a; }
+  .nav-right-val { font-weight: 700; font-size: 15px; margin-top: 1px; }
+
+  /* ===== Breadcrumb ===== */
+  .breadcrumb {
+    font-size: 12px; font-weight: 600; letter-spacing: 1px; color: #4a4a4a;
+    padding-bottom: 14px; border-bottom: 1px solid #d8d8da; margin-bottom: 22px;
+  }
+
+  /* ===== Section header ===== */
+  .section-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 4px 6px 22px;
+  }
+  .section-title { font-size: 13px; font-weight: 700; letter-spacing: 1.4px; color: #1a1a1a; }
+  .chevron { width: 20px; height: 20px; color: #1a1a1a; }
+
+  /* ===== Two column layout ===== */
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+
+  /* ===== Loan to value card (left) ===== */
+  .loan-card {
+    background: #fff; border-radius: 8px;
+    padding: 30px 34px 34px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  }
+  .loan-card h2 {
+    font-size: 17px; font-weight: 700;
+    padding-bottom: 16px; border-bottom: 1px solid #e2e2e4; margin-bottom: 26px;
+  }
+  .payment-label { text-align: center; font-size: 14px; color: #1a1a1a; margin-bottom: 4px; }
+  .payment-amount {
+    text-align: center; font-size: 38px; font-weight: 800;
+    letter-spacing: -0.5px; margin-bottom: 26px;
+  }
+  .stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 30px; }
+  .stat-box { background: #ececee; border-radius: 6px; padding: 22px 16px; text-align: center; }
+  .stat-value { font-size: 26px; font-weight: 800; letter-spacing: -0.3px; }
+  .stat-label { font-size: 13px; color: #4a4a4a; margin-top: 4px; }
+  .field-helper { font-size: 13.5px; color: #1a1a1a; margin-bottom: 10px; }
+  .field-row {
+    display: grid; grid-template-columns: 110px 1fr;
+    align-items: center; gap: 12px; margin-bottom: 18px;
+  }
+  .field-label { font-size: 14px; color: #1a1a1a; }
+  .select { position: relative; }
+  .select select {
+    width: 100%; appearance: none; -webkit-appearance: none;
+    background: #fff; border: 1px solid #c6c6c8; border-radius: 4px;
+    padding: 11px 36px 11px 14px; font-size: 14px; color: #1a1a1a;
+    font-family: inherit; cursor: pointer;
+  }
+  .select::after {
+    content: ""; position: absolute; right: 14px; top: 50%;
+    width: 8px; height: 8px;
+    border-right: 2px solid #1a1a1a; border-bottom: 2px solid #1a1a1a;
+    transform: translateY(-70%) rotate(45deg); pointer-events: none;
+  }
+  .divider { border-top: 1px dashed #d0d0d2; margin: 12px 0 18px; }
+  .delta-row {
+    display: flex; align-items: center; justify-content: center;
+    gap: 12px; padding-top: 6px;
+  }
+  .delta-icon {
+    width: 28px; height: 28px; border-radius: 50%; background: #ef9712;
+    display: flex; align-items: center; justify-content: center; color: #fff;
+  }
+  .delta-icon svg { width: 14px; height: 14px; }
+  .delta-amount { font-size: 20px; font-weight: 800; }
+  .delta-text { font-size: 14px; color: #1a1a1a; }
+
+  /* ===== Ad card (right) ===== */
+  .ad-card {
+    background: #0c2b5c; border-radius: 8px; color: #fff;
+    padding: 28px 30px; display: flex; flex-direction: column;
+  }
+  .ad-top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 12px; margin-bottom: 4px;
+  }
+  .ad-title { font-size: 20px; font-weight: 700; line-height: 1.25; }
+  .ad-tag {
+    background: transparent; border: 1px solid rgba(255,255,255,0.35);
+    border-radius: 999px; padding: 4px 12px; font-size: 12px;
+    display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+  }
+  .ad-tag .x { opacity: 0.7; }
+  .ad-tag b { font-weight: 600; }
+  .powered {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; margin-bottom: 18px; color: rgba(255,255,255,0.95);
+  }
+  .kw-badge {
+    background: #d92228; color: #fff; font-weight: 800;
+    font-size: 11px; padding: 2px 6px; border-radius: 2px; letter-spacing: 0.5px;
+  }
+  .search-row {
+    display: flex; background: #fff; border-radius: 4px;
+    overflow: hidden; margin-bottom: 18px;
+  }
+  .search-row input {
+    flex: 1; border: none; outline: none;
+    padding: 13px 16px; font-size: 13.5px; color: #6a6a6a; font-family: inherit;
+  }
+  .search-btn {
+    background: #ef9712; color: #fff; border: none;
+    padding: 0 22px; font-size: 14px; font-weight: 600;
+    display: flex; align-items: center; gap: 8px;
+    cursor: pointer; font-family: inherit;
+  }
+  .search-btn svg { width: 14px; height: 14px; }
+  .ad-label {
+    font-size: 12px; font-weight: 700; letter-spacing: 1.2px;
+    color: rgba(255,255,255,0.95); margin-bottom: 12px;
+  }
+  .ad-footer {
+    text-align: center; font-size: 12.5px; color: rgba(255,255,255,0.85);
+    display: flex; justify-content: center; align-items: center; gap: 6px;
+    margin-top: auto; padding-top: 16px;
+  }
+  .ad-footer svg { width: 12px; height: 12px; opacity: 0.8; }
+
+  /* ===== Market pulse specifics ===== */
+  .pulse-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+  .pulse-stat {
+    background: rgba(255,255,255,0.06);
+    border-radius: 6px; padding: 12px 12px 14px;
+  }
+  .pulse-lbl {
+    font-size: 10.5px; color: rgba(255,255,255,0.7);
+    letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 6px;
+  }
+  .pulse-val { font-size: 18px; font-weight: 800; letter-spacing: -0.3px; }
+  .pulse-trend { font-size: 11.5px; margin-top: 3px; display: inline-flex; align-items: center; gap: 4px; }
+  .pulse-trend.up { color: #6ee7b7; }
+  .pulse-trend.down { color: #fca5a5; }
+  .spark-wrap {
+    background: rgba(255,255,255,0.06); border-radius: 6px;
+    padding: 12px 14px; margin-bottom: 14px;
+  }
+  .spark-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+  .spark-lbl { font-size: 11.5px; color: rgba(255,255,255,0.8); letter-spacing: 0.3px; }
+  .spark-delta { font-size: 12px; color: #6ee7b7; font-weight: 700; }
+  .spark-svg { width: 100%; height: 38px; display: block; }
+  .trend-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+  .trend-row {
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(255,255,255,0.04); border-radius: 6px;
+    padding: 10px 14px; cursor: pointer;
+  }
+  .trend-name { font-size: 13px; font-weight: 700; }
+  .trend-sub { font-size: 11px; color: rgba(255,255,255,0.7); margin-top: 1px; }
+  .trend-badge {
+    background: rgba(110,231,183,0.18); color: #6ee7b7;
+    font-size: 11.5px; font-weight: 700; padding: 4px 10px;
+    border-radius: 999px;
+  }
+
+  @media (max-width: 1100px) {
+    .grid, .top-nav { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 700px) {
+    body { padding: 16px; }
+    .grid, .top-nav, .pulse-row { grid-template-columns: 1fr; }
+    .field-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Top nav -->
+  <div class="top-nav">
+    <div class="nav-card">
+      <div class="nav-left">
+        <div class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div>
+        <div><div class="nav-title">Payment</div><div class="nav-sub">Make a Payment</div></div>
+      </div>
+      <div class="nav-right"><div class="nav-right-sub">Due: XX/XX</div><div class="nav-right-val">$X,XXX.XX</div></div>
+    </div>
+    <div class="nav-card active">
+      <div class="nav-left">
+        <div class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></div>
+        <div><div class="nav-title">My Home</div></div>
+      </div>
+      <div class="nav-right"><div class="nav-right-sub">Discover options</div></div>
+    </div>
+    <div class="nav-card">
+      <div class="nav-left">
+        <div class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="1"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></svg></div>
+        <div><div class="nav-title">My Loan</div></div>
+      </div>
+      <div class="nav-right"><div class="nav-right-sub">Balance</div><div class="nav-right-val">$XXX,XXX.XX</div></div>
+    </div>
+    <div class="nav-card">
+      <div class="nav-left">
+        <div class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+        <div><div class="nav-title">Documents</div></div>
+      </div>
+      <div class="nav-right"><div class="nav-right-sub">View your documents</div></div>
+    </div>
+  </div>
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">MY HOME</div>
+
+  <!-- Section header -->
+  <div class="section-header">
+    <div class="section-title">LOWER MY PAYMENT</div>
+    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
+  </div>
+
+  <!-- Two column grid -->
+  <div class="grid">
+
+    <!-- LEFT: Loan to value -->
+    <div class="loan-card">
+      <h2>Loan to value</h2>
+      <div class="payment-label">Your new monthly payment</div>
+      <div class="payment-amount">$X,XXX</div>
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-value">$XXX,XXX</div><div class="stat-label">Original Property Value</div></div>
+        <div class="stat-box"><div class="stat-value">$XXX,XXX</div><div class="stat-label">Loan Balance</div></div>
+      </div>
+      <div class="field-helper">Select a date to compare your options.</div>
+      <div class="field-row"><div class="field-label">Target Date:</div><div class="select"><select><option>XXX XXXX</option></select></div></div>
+      <div class="field-helper">Select a percentage to compare your options.</div>
+      <div class="field-row"><div class="field-label">LTV Target:</div><div class="select"><select><option>XX %</option></select></div></div>
+      <div class="divider"></div>
+      <div class="delta-row">
+        <div class="delta-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 14 12 8 18 14"/></svg></div>
+        <div class="delta-amount">$X,XXX/mo</div><div class="delta-text">Payment goes up</div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Market Pulse -->
+    <div class="ad-card">
+      <div class="ad-top">
+        <div class="ad-title">Your market at a glance</div>
+        <div class="ad-tag"><b>SD</b><span class="x">×</span><b>kw.com</b></div>
+      </div>
+      <div class="powered"><span class="kw-badge">KW</span><span>Powered by Keller Williams</span></div>
+
+      <div class="pulse-row">
+        <div class="pulse-stat">
+          <div class="pulse-lbl">Median Price</div>
+          <div class="pulse-val">$XXXk</div>
+          <div class="pulse-trend up">▲ X.X% YoY</div>
+        </div>
+        <div class="pulse-stat">
+          <div class="pulse-lbl">Days on Market</div>
+          <div class="pulse-val">XX</div>
+          <div class="pulse-trend down">▼ X days</div>
+        </div>
+        <div class="pulse-stat">
+          <div class="pulse-lbl">New Listings</div>
+          <div class="pulse-val">XXX</div>
+          <div class="pulse-trend up">▲ this week</div>
+        </div>
+      </div>
+
+      <div class="spark-wrap">
+        <div class="spark-top">
+          <span class="spark-lbl">Home values · last 12 months</span>
+          <span class="spark-delta">+X.X%</span>
+        </div>
+        <svg class="spark-svg" viewBox="0 0 300 40" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="sparkFill" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stop-color="#6ee7b7" stop-opacity="0.45"/>
+              <stop offset="100%" stop-color="#6ee7b7" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <path d="M0,30 L25,28 L50,26 L75,28 L100,22 L125,20 L150,22 L175,17 L200,15 L225,12 L250,14 L275,8 L300,6 L300,40 L0,40 Z" fill="url(#sparkFill)"/>
+          <path d="M0,30 L25,28 L50,26 L75,28 L100,22 L125,20 L150,22 L175,17 L200,15 L225,12 L250,14 L275,8 L300,6" stroke="#6ee7b7" stroke-width="2" fill="none"/>
+        </svg>
+      </div>
+
+      <div class="search-row">
+        <input type="text" placeholder="Search by city, neighborhood, or ZIP" />
+        <button class="search-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Search
+        </button>
+      </div>
+
+      <div class="ad-label">TRENDING NEIGHBORHOODS</div>
+
+      <div class="trend-list">
+        <div class="trend-row">
+          <div>
+            <div class="trend-name">Terrytown</div>
+            <div class="trend-sub">$XXXk median · XX days</div>
+          </div>
+          <div class="trend-badge">+X.X%</div>
+        </div>
+        <div class="trend-row">
+          <div>
+            <div class="trend-name">Westview</div>
+            <div class="trend-sub">$XXXk median · XX days</div>
+          </div>
+          <div class="trend-badge">+X.X%</div>
+        </div>
+      </div>
+
+      <div class="ad-footer">
+        <span>See full market report on kw.com</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
