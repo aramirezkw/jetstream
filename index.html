@@ -145,6 +145,60 @@
   .thumb-5 {
     background: linear-gradient(135deg, #fde0e1 0%, #fdebec 100%);
   }
+  .thumb-6 {
+    background: linear-gradient(135deg, #e7e0fb 0%, #efe9ff 100%);
+  }
+
+  /* ===== Illustration: option 5 (concierge / variant) ===== */
+  .variant-illus {
+    width: 78%;
+    background: #fff;
+    border-radius: 6px;
+    padding: 12px;
+    border: 1px solid rgba(112,84,209,0.2);
+  }
+  .variant-steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .variant-step {
+    background: #f3f0fc;
+    border-radius: 4px;
+    padding: 8px 6px;
+    text-align: center;
+  }
+  .variant-step .dot {
+    width: 18px; height: 18px; border-radius: 50%;
+    background: #7054d1; color: #fff;
+    font-size: 9px; font-weight: 800;
+    display: inline-flex; align-items: center; justify-content: center;
+    margin-bottom: 4px;
+  }
+  .variant-step .lbl {
+    font-size: 8px; color: #4a4a4a; font-weight: 700;
+    letter-spacing: 0.3px; text-transform: uppercase;
+  }
+  .variant-agents {
+    display: flex; align-items: center; gap: 8px;
+    background: #f3f0fc; border-radius: 4px; padding: 6px 10px;
+  }
+  .variant-avatars { display: flex; }
+  .variant-av {
+    width: 16px; height: 16px; border-radius: 50%;
+    border: 2px solid #fff; margin-left: -5px;
+    background: linear-gradient(135deg, #a18cd1, #7054d1);
+  }
+  .variant-av:first-child { margin-left: 0; }
+  .variant-av.more {
+    background: #7054d1; color: #fff;
+    font-size: 7px; font-weight: 800;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .variant-agents .agent-lbl {
+    font-size: 9px; color: #4a4a4a; font-weight: 700;
+  }
 
   /* ===== Illustration: Base dashboard (1) ===== */
   .illus { position: relative; width: 78%; }
@@ -336,6 +390,7 @@
   .tag.green { background: var(--green-tint); color: var(--green); }
   .tag.orange { background: var(--orange-tint); color: #a45e00; }
   .tag.red { background: var(--red-tint); color: var(--red); }
+  .tag.purple { background: #ece5fb; color: #5a3fc0; }
 
   .card-title {
     font-size: 18px;
@@ -399,11 +454,11 @@
 
     <div class="eyebrow">Project Jetstream</div>
     <h1>Mortgage Servicing Prototypes</h1>
-    <p class="lede">3 directions exploring how to surface home discovery and equity insights inside a consumer-facing servicing dashboard.</p>
+    <p class="lede">4 directions exploring how to surface home discovery and equity insights inside a consumer-facing servicing dashboard.</p>
 
     <div class="meta-row">
       <span class="meta-pill">Desktop · 1280px</span>
-      <span class="meta-pill">3 prototypes</span>
+      <span class="meta-pill">4 prototypes</span>
       <span class="meta-pill">Static HTML</span>
       <span class="meta-pill">Powered by KW</span>
     </div>
@@ -539,10 +594,48 @@
         </div>
       </a>
 
+      <!-- 4. Option 5 -->
+      <a class="card" href="option5.html">
+        <div class="thumb thumb-6">
+          <span class="badge">4</span>
+          <div class="variant-illus">
+            <div class="variant-steps">
+              <div class="variant-step"><div class="dot">1</div><div class="lbl">Search</div></div>
+              <div class="variant-step"><div class="dot">2</div><div class="lbl">Tour</div></div>
+              <div class="variant-step"><div class="dot">3</div><div class="lbl">Close</div></div>
+            </div>
+            <div class="variant-agents">
+              <div class="variant-avatars">
+                <div class="variant-av"></div>
+                <div class="variant-av"></div>
+                <div class="variant-av"></div>
+                <div class="variant-av more">+9</div>
+              </div>
+              <div class="agent-lbl">XX KW agents near you</div>
+            </div>
+          </div>
+        </div>
+        <div class="body">
+          <div class="tag-row">
+            <span class="tag purple">Concierge</span>
+            <span class="tag navy">Agent-matched</span>
+          </div>
+          <div class="card-title">Concierge variant</div>
+          <div class="card-sub">Agent-matched guided flow</div>
+          <p class="card-desc">An alternate direction framing the discovery card as a guided journey — Search → Tour → Close — anchored by local KW agent matching for a more hand-held experience.</p>
+          <div class="card-foot">
+            <span>option5.html</span>
+            <span class="open">Open
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </span>
+          </div>
+        </div>
+      </a>
+
     </div>
 
     <div class="footnote">
-      <b>Recommendation:</b> the strongest path combines the personalization of <b>Equity Move-Up (2)</b> with the depth of <b>Market Pulse (3)</b>, layered onto the <b>base dashboard (1)</b> to keep the servicing experience cohesive.
+      <b>Recommendation:</b> the strongest path combines the personalization of <b>Equity Move-Up (2)</b> with the depth of <b>Market Pulse (3)</b>, layered onto the <b>base dashboard (1)</b>. The <b>Concierge variant (4)</b> is the alternate to test when the goal is agent acquisition vs. self-serve discovery.
     </div>
 
   </div>
